@@ -81,7 +81,7 @@ export default class SharedstreetsLayer extends CompositeLayer {
     // it is the deck gl layer that renders sample data.
     const sourceLayerProps = info.sourceLayer.props;
     const {tileX, tileY, tileZ, idx} = sourceLayerProps;
-    const tile = sourceLayer.state.tiles.find(t => t.x === tileX && t.y === tileY && t.z === tileZ);
+    const tile = info.tiles.find(t => t.x === tileX && t.y === tileY && t.z === tileZ);
     const {allData, fields} = tile._data;
     info.allData = allData;
     info.fields = fields;
@@ -94,11 +94,12 @@ export default class SharedstreetsLayer extends CompositeLayer {
    * @param {*} subLayerProps 
    * @param {*} tile current tile for this sub-layers 
    */
-  renderSubLayers(subLayerProps, tile) {
+  renderSubLayers(subLayerProps) {
     const {layers, objectHovered, mapState, interactionConfig, layerVersion} = this.props;
     const {oldLayerDataMaps} = this.state;
     // layers are kepler layers rendering a subset of data. We can render other layers in the 
     // viewport by giving different ids and data. 
+    const tile = subLayerProps.tile;
     return layers && layers.map((layer, idx) => {
       const layerDataId = `${layer.id}-${tile.z}-${tile.x}-${tile.y}`;
       let oldLayerData;
